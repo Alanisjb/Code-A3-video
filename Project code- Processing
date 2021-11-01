@@ -1,0 +1,174 @@
+int[] dropX, dropY, vDropY;
+int dropAmount;
+int rightX = 200;
+int leftX = 1400;
+
+void setup()
+{ size(1400, 800); }
+
+void draw() {
+
+
+//sky
+fill(0, 150, 250);
+rect(0, 0, 1400, 600);
+
+
+
+//flower stem
+strokeWeight(10);
+stroke(0, 128, 0);
+line(775, 550, 775, 400);
+
+//growing stem
+rect(width/3, height, 10, -frameCount);
+
+//leaves
+ellipse(785, 470, 10, 10);
+ellipse(765, 440, 10, 10);
+
+//petals
+strokeWeight(1);
+stroke(0);
+fill(255, 100, 255);
+ellipse(740, 315, 75, 75);
+ellipse(740, 380, 75, 75);
+ellipse(810, 315, 75, 75);
+ellipse(810, 380, 75, 75);
+
+//flower centre
+fill(255, 200, 100);
+ellipse(775, 350, 50, 50);
+
+noStroke();
+
+//pot base 1
+strokeWeight(1);
+stroke(0);
+fill(175,150,70);
+quad (650, 500, 900, 500, 850, 600, 700, 600);
+
+//pot rim 1
+fill(150,150,100);
+rect(650, 500, 250, 25);
+
+//pot base 2
+strokeWeight(1);
+stroke(0);
+fill(175,150,70);
+quad (350, 500, 600, 500, 550, 600, 400, 600);
+
+//pot rim 2
+fill(150,150,100);
+rect(350, 500, 250, 25);
+
+//grass
+noStroke();
+fill(0, 250, 10);
+rect(0, 600, 1400, 200);
+
+//sun
+noStroke();
+fill(255, 255, 0);
+ellipse(200, 150, 200, 200);
+strokeWeight(1);
+stroke (255, 255, 0);
+line(200, 250, 200, 350);
+line(250, 200, 375, 275);
+line(275, 125, 400, 100);
+line(125, 150, 25, 150);
+line(150, 200, 50, 300);
+line(150, 75, 100, 25);
+line(225, 75, 250, 10);
+
+//jack
+strokeWeight(1);
+stroke(0);
+fill(200, 200, 50);
+rect(210, 590, 10, 50); //leg
+rect(170, 590, 10, 50); //leg
+rect(230, 530, 50, 10); //arm
+rect(120, 530, 50, 10); //arm
+ellipse(200, 550, 100, 100); //body
+ellipse(200, 490, 50, 50); //head
+
+fill(255);
+ellipse(190, 480, 15, 15);
+ellipse(210, 480, 15, 15); 
+
+
+fill(0);
+ellipse(190, 480, 8, 8); //eye
+ellipse(210, 480, 8, 8); //eye
+line(200, 485, 200, 490); //nose
+line(200, 490, 195, 492); //nose
+
+fill(255, 0, 0);
+arc(200, 495, 40, 30, 0, 3.14);
+
+
+noStroke();
+
+
+//left cloud 
+fill(209);
+ ellipse(leftX, 150, 126, 97);
+ ellipse(leftX+62, 150, 70, 60);
+ ellipse(leftX-62, 150, 70, 60);
+ leftX=leftX-1;
+
+//right cloud
+ ellipse(rightX, 100, 126, 97);
+ ellipse(rightX+62, 100, 70, 60);
+ ellipse(rightX-62, 100, 70, 60);
+ rightX=rightX+1;
+
+{ //rain drops
+dropAmount = 50;
+dropX = new int[dropAmount];
+dropY= new int[dropAmount];
+vDropY = new int[dropAmount];
+
+for (int i = 0; i < dropAmount; i++) {
+ dropX[i] = (int)random(5, width -10);
+ dropY[i] = (int)random(5, width -10);
+ vDropY[i] = (int)random(5, 20);
+}
+
+}
+for (int i = 0; i <dropAmount; i++) {
+ fill(0, 0, 255);
+ rect(dropX[i], dropY[i], 5, 10);
+ dropY[i] = dropY[i] + vDropY[i];
+ if (dropY[i] > height) {
+   dropY[i] = (int)random(0,-250);
+ }
+}
+
+ }//flower 
+void mousePressed() {
+
+ drawFlower(100, 80); 
+}
+void drawFlower(float posx, float posy) {
+ pushMatrix();
+ translate(mouseX, mouseY);
+ fill(255);
+ stroke(0);
+
+ beginShape();
+ int n = 6; 
+ for (int i = 0; i < n; i++) {
+   float a = map(i, 0, n, 0, TWO_PI);
+   float a1 = map(i + 1, 0, n, 0, TWO_PI);    
+   float r = 60;
+   float x = r * cos(a);
+   float y = r * sin(a);
+   float x1 = r * cos(a1);
+   float y1 = r * sin(a1);  
+   vertex(0, 0);
+   bezierVertex(x, y, x1, y1, 0, 0);  
+ }
+ endShape();
+ popMatrix();
+}
